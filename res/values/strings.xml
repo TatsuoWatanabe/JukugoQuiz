@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">熟語ゲーム</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="buttonSubmit">どうだ！</string>
+    <string name="buttonGiveUp">降参です</string>
+    <string name="buttonNext">次の問題</string>
+
+</resources>

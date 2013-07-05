@@ -1,0 +1,36 @@
+<GridLayout xmlns:android=
+  "http://schemas.android.com/apk/res/android"
+  android:id="@+id/gridMain"
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent"
+  android:columnCount="5"
+  android:rowCount="6" >
+
+  <Button
+    android:id="@+id/buttonSubmit"
+    android:layout_column="0"
+    android:layout_row="5"
+    android:onClick="buttonSubmitClick"
+    android:text="@string/buttonSubmit" />
+
+  <Button
+    android:id="@+id/button"
+    android:layout_column="1"
+    android:layout_row="5"
+    android:onClick="buttonGiveUpClick"
+    android:text="@string/buttonGiveUp" />
+
+  <Button
+    android:id="@+id/buttonNext"
+    android:layout_column="2"
+    android:layout_row="5"
+    android:onClick="buttonNextClick"
+    android:text="@string/buttonNext" />
+
+  <EditText
+    android:id="@+id/editTextAnswer"
+    android:layout_column="2"
+    android:layout_row="2"
+    android:hint=""
+    android:inputType="text" />
+</GridLayout>
