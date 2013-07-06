@@ -19,13 +19,13 @@ import android.widget.TextView;
 public class MainActivity extends Activity {
   TextView[] TextViews = new TextView[16];
   ArrayList<Word> Dictionary = new ArrayList<Word>();
-  Word[] Answers = new Word[8]; 
+  Word[] Answers = new Word[8];
   char AnswerChar;
 
   @Override
   protected void onCreate(
     Bundle savedInstanceState) {
-    
+
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
     initialize();
@@ -64,7 +64,7 @@ public class MainActivity extends Activity {
         tv.setText(String.valueOf(i));
       }
 
-      GridLayout.LayoutParams p = 
+      GridLayout.LayoutParams p =
         new GridLayout.LayoutParams();
       p.width = cellSize;
       p.height = cellSize;
@@ -141,7 +141,7 @@ public class MainActivity extends Activity {
   }
 
   public void showMessage(String s) {
-    AlertDialog.Builder builder = 
+    AlertDialog.Builder builder =
       new AlertDialog.Builder(this);
     builder.setMessage(s);
     builder.setPositiveButton(
@@ -156,9 +156,9 @@ public class MainActivity extends Activity {
     int candidateCount = 0;
     String selectedWord = "";
     char selectedChar = 0;
-    ArrayList<Word> preCandidate = 
+    ArrayList<Word> preCandidate =
       new ArrayList<Word>();
-    ArrayList<Word> postCandidate = 
+    ArrayList<Word> postCandidate =
       new ArrayList<Word>();
     Random rnd = new Random();
     while (candidateCount < 4) {
@@ -169,7 +169,7 @@ public class MainActivity extends Activity {
       preCandidate.clear();
       postCandidate.clear();
       for (Word w : Dictionary) {
-        SearchResult sr = w.Search(selectedChar);
+        SearchResult sr = w.search(selectedChar);
         switch (sr) {
         case Pre:
           preCandidate.add(w);
@@ -180,7 +180,7 @@ public class MainActivity extends Activity {
         default:
         }
       }
-      candidateCount = preCandidate.size() + 
+      candidateCount = preCandidate.size() +
         postCandidate.size();
     }
 
@@ -243,7 +243,7 @@ public class MainActivity extends Activity {
     for (int i = 0; i < 8; i++) {
       if (Answers[i] == null)
         continue;
-      s += Answers[i].kanji() + "　（" + 
+      s += Answers[i].kanji() + "　（" +
         Answers[i].yomi() + "）\n";
     }
     return s;
@@ -254,8 +254,8 @@ public class MainActivity extends Activity {
       R.id.editTextAnswer);
     et.setText(Character.toString(AnswerChar));
 
-    showMessage("答えは「" + 
-      Character.toString(AnswerChar) + 
+    showMessage("答えは「" +
+      Character.toString(AnswerChar) +
         "」です\n\n" + getAnswerString());
   }
 

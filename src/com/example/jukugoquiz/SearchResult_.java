@@ -1,5 +1,5 @@
 package com.example.jukugoquiz;
 
-public enum SearchResult {
+public enum SearchResult_ {
   NotFound, Pre, Post
 }
