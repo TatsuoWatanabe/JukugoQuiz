@@ -19,7 +19,7 @@ import android.widget.TextView;
 public class MainActivity extends Activity {
   TextView[] TextViews = new TextView[16];
   ArrayList<Word> Dictionary = new ArrayList<Word>();
-  Word[] Answers = new Word[8];
+  Word[] Answers = new Word[8]; 
   char AnswerChar;
 
   @Override
@@ -161,10 +161,9 @@ public class MainActivity extends Activity {
     ArrayList<Word> postCandidate = 
       new ArrayList<Word>();
     Random rnd = new Random();
-
     while (candidateCount < 4) {
       selectedWord = Dictionary.get(
-        rnd.nextInt(Dictionary.size())).Kanji;
+        rnd.nextInt(Dictionary.size())).kanji();
       selectedChar = selectedWord.charAt(
         rnd.nextInt(2));
       preCandidate.clear();
@@ -219,7 +218,7 @@ public class MainActivity extends Activity {
         int startIndex = 1;
         if (i < 4)
           startIndex = 0;
-        TextViews[i].setText(Answers[i].Kanji.
+        TextViews[i].setText(Answers[i].kanji().
           substring(startIndex, startIndex + 1));
       }
     }
@@ -244,8 +243,8 @@ public class MainActivity extends Activity {
     for (int i = 0; i < 8; i++) {
       if (Answers[i] == null)
         continue;
-      s += Answers[i].Kanji + "　（" + 
-        Answers[i].Yomi + "）\n";
+      s += Answers[i].kanji() + "　（" + 
+        Answers[i].yomi() + "）\n";
     }
     return s;
   }
