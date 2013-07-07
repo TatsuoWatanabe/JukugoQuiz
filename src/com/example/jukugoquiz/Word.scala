@@ -3,7 +3,6 @@ package com.example.jukugoquiz
 case class Word(kanji: String, yomi: String) {
   lazy val char1 = kanji.charAt(0);
   lazy val char2 = kanji.charAt(1);
-
   def search(target: Char): SearchResult.Value = {
     target match {
       case this.char1 => SearchResult.Post

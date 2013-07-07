@@ -16,7 +16,7 @@ import android.widget.EditText;
 import android.widget.GridLayout;
 import android.widget.TextView;
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity { 
   TextView[] TextViews = new TextView[16];
   ArrayList<Word> Dictionary = new ArrayList<Word>();
   Word[] Answers = new Word[8];
@@ -169,19 +169,11 @@ public class MainActivity extends Activity {
       preCandidate.clear();
       postCandidate.clear();
       for (Word w : Dictionary) {
-        SearchResult sr = w.search(selectedChar);
-        switch (sr) {
-        case Pre:
-          preCandidate.add(w);
-          break;
-        case Post:
-          postCandidate.add(w);
-          break;
-        default:
-        }
+        scala.Enumeration.Value sr = w.search(selectedChar);
+        if(sr == SearchResult.Pre()) preCandidate.add(w);
+        else if(sr == SearchResult.Post()) postCandidate.add(w);
       }
-      candidateCount = preCandidate.size() +
-        postCandidate.size();
+      candidateCount = preCandidate.size() + postCandidate.size();
     }
 
     for (int i = 0; i < 8; i++)
