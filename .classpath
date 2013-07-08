@@ -6,7 +6,8 @@
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="gen"/>
-	<classpathentry exported="true" kind="lib" path="/Users/tatsuo/Documents/Files/Android/AndroidScala/JukugoQuiz/libs/scala_library.min.jar"/>
-	<classpathentry exported="true" kind="lib" path="/Applications/eclipse/configuration/org.eclipse.osgi/bundles/806/1/.cp/lib/scala-library.jar" sourcepath="/Applications/eclipse/configuration/org.eclipse.osgi/bundles/806/1/.cp/lib/scala-library-src.jar"/>
+	<classpathentry kind="lib" path="D:/Programming/05_Android/JukugoQuiz/libs/scala_library.min.jar"/>
+	<classpathentry kind="lib" path="D:/Programming/Eclipse/eclipse/configuration/org.eclipse.osgi/bundles/960/1/.cp/lib/scala-library.jar" sourcepath="/Applications/eclipse/configuration/org.eclipse.osgi/bundles/806/1/.cp/lib/scala-library-src.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
