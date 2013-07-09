@@ -4,8 +4,44 @@
   android:layout_width="fill_parent"
   android:layout_height="fill_parent"
   android:columnCount="5"
-  android:rowCount="6" >
+  android:rowCount="6" >   
+ 
+  <TextView
+      android:id="@+id/textView1"
+      android:layout_column="0"
+      android:layout_row="0"
+      android:layout_width="100dp"
+      android:layout_height="100dp"
+      android:layout_gravity="center"
+      android:text="TextView" />
+   
+   <TextView
+     android:id="@+id/textView2"
+     android:layout_column="1"
+     android:layout_row="0"
+     android:layout_width="100dp"
+     android:layout_height="100dp"
+     android:layout_gravity="center"
+     android:text="TextView" />
 
+   <TextView
+     android:id="@+id/textView3"
+     android:layout_column="2"
+     android:layout_row="0"
+     android:layout_width="100dp"
+     android:layout_height="100dp"
+     android:layout_gravity="center"
+     android:text="TextView" />
+   
+  <EditText
+    android:id="@+id/editTextAnswer"
+    android:layout_column="2"
+    android:layout_row="2"
+    android:hint=""
+    android:inputType="text" />
+  
+  
+    
   <Button
     android:id="@+id/buttonSubmit"
     android:layout_column="0"
@@ -27,10 +63,6 @@
     android:onClick="buttonNextClick"
     android:text="@string/buttonNext" />
 
-  <EditText
-    android:id="@+id/editTextAnswer"
-    android:layout_column="2"
-    android:layout_row="2"
-    android:hint=""
-    android:inputType="text" />
+
+
 </GridLayout>

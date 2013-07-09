@@ -10,8 +10,6 @@ class MainActivity extends Activity {
   override protected def onCreate(savedInstanceState: Bundle) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_main)
-
-    showMessage("onCreate")
   }
 
   override def onCreateOptionsMenu(menu: Menu): Boolean = {
