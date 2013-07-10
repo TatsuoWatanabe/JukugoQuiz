@@ -2,10 +2,24 @@
 <resources>
 
     <string name="app_name">熟語ゲーム</string>
+
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
+
     <string name="buttonSubmit">どうだ！</string>
     <string name="buttonGiveUp">降参です</string>
     <string name="buttonNext">次の問題</string>
+
+    <string name="arrowUp">↑</string>
+    <string name="arrowDown">↓</string>
+    <string name="arrowRight">→</string>
+    <string name="arrowLeft">←</string>
+
+    <string name="arrowUpRight">↗</string>
+    <string name="arrowUpLeft">↖</string>
+    <string name="arrowDownRight">↘</string>
+    <string name="arrowDownLeft">↙</string>
+
+    <string name="answerHint">答</string>
 
 </resources>
