@@ -50,40 +50,99 @@ class MainActivity extends Activity {
       )
       val lines = Iterator.continually(br.readLine).takeWhile(_ != null).toList
       val wordList = lines.map(_.split(",")).map(arr => new Word(arr(0), arr(1)))
+    } catch { case e: IOException =>
+      throw new IOException(e.getMessage.toString)
     }
   }
 
   private def showQuestion() {
+    val et = findViewById(R.id.editTextAnswer).asInstanceOf[EditText]
+    et.setText("")
+    val candidateCount = 0
+    val selectedWord = ""
+    val selectedChar: Char = 'a'
+    val preCandidate: Array[Word] = Array()
+    val postCandidate: Array[Word] = Array()
+    val rnd = new java.util.Random()
     showMessage("showQuestion")
   }
 
   /*
-  private void initialize() {
-    try {
-      LoadData();
-    } catch (IOException e) {
-      showMessage(e.getLocalizedMessage());
-      return;
-    }
-    showQuestion();
-  }
-   */
-  /*
- private void LoadData() throws IOException {
-    AssetManager as = getResources().getAssets();
-    try {
-      InputStream is = as.open("Jukugo2c_utf8.txt");
-      BufferedReader br = new BufferedReader(
-        new InputStreamReader(is));
-      String line;
-      while ((line = br.readLine()) != null) {
-        String[] columns = line.split(",");
-        Word w = new Word(columns[0], columns[1]);
-        Dictionary.add(w);
+  private void showQuestion() {
+    EditText et = (EditText) findViewById(
+      R.id.editTextAnswer);
+    et.setText("");
+    int candidateCount = 0;
+    String selectedWord = "";
+    char selectedChar = 0;
+    ArrayList<Word> preCandidate = 
+      new ArrayList<Word>();
+    ArrayList<Word> postCandidate = 
+      new ArrayList<Word>();
+    Random rnd = new Random();
+
+    while (candidateCount < 4) {
+      selectedWord = Dictionary.get(
+        rnd.nextInt(Dictionary.size())).Kanji;
+      selectedChar = selectedWord.charAt(
+        rnd.nextInt(2));
+      preCandidate.clear();
+      postCandidate.clear();
+      for (Word w : Dictionary) {
+        SearchResult sr = w.Search(selectedChar);
+        switch (sr) {
+        case Pre:
+          preCandidate.add(w);
+          break;
+        case Post:
+          postCandidate.add(w);
+          break;
+        default:
+        }
       }
-    } catch (IOException e) {
-      throw new IOException(e.toString());
+      candidateCount = preCandidate.size() + 
+        postCandidate.size();
     }
+
+    for (int i = 0; i < 8; i++)
+      Answers[i] = null;
+
+    if (preCandidate.size() > 4) {
+      for (int i = 0; i < 4; i++) {
+        int index = rnd.nextInt(
+          preCandidate.size());
+        Answers[i] = preCandidate.get(index);
+        preCandidate.remove(index);
+      }
+    } else {
+      for (int i = 0; i < preCandidate.size(); i++)
+        Answers[i] = preCandidate.get(i);
+    }
+
+    if (postCandidate.size() > 4) {
+      for (int i = 0; i < 4; i++) {
+        int index = rnd.nextInt(
+          postCandidate.size());
+        Answers[i + 4] = postCandidate.get(index);
+        postCandidate.remove(index);
+      }
+    } else {
+      for (int i = 0; i < postCandidate.size(); i++)
+        Answers[i + 4] = postCandidate.get(i);
+    }
+
+    for (int i = 0; i < 8; i++) {
+      if (Answers[i] == null)
+        TextViews[i].setText("●");
+      else {
+        int startIndex = 1;
+        if (i < 4)
+          startIndex = 0;
+        TextViews[i].setText(Answers[i].Kanji.
+          substring(startIndex, startIndex + 1));
+      }
+    }
+    AnswerChar = selectedChar;
   }
    */
 
