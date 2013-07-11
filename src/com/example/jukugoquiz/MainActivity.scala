@@ -28,7 +28,7 @@ class MainActivity extends Activity {
     this.showMessage(msg)
   }
   */
-  
+
   private def initialize() {
     val tb = findViewById(R.id.table).asInstanceOf[TableLayout]
     val et = findViewById(R.id.editTextAnswer).asInstanceOf[EditText]
@@ -37,26 +37,26 @@ class MainActivity extends Activity {
     } catch { case e: IOException =>
       showMessage(e.getLocalizedMessage)
     }
-    
+
     showQuestion()
   }
-  
+
   private def loadData() {
     import java.io._
     showMessage("loadData")
     try{
-      val ips: InputStream = getResources().getAssets().open("Jukugo2c_utf8.txt")
       val br = new BufferedReader(
-        new InputStreamReader(ips)   
+        new InputStreamReader(getResources.getAssets.open("Jukugo2c_utf8.txt"))
       )
+      val lines = Iterator.continually(br.readLine).takeWhile(_ != null).toList
+      val wordList = lines.map(_.split(",")).map(arr => new Word(arr(0), arr(1)))
     }
-    val as = getResources().getAssets()
   }
-  
+
   private def showQuestion() {
     showMessage("showQuestion")
   }
-  
+
   /*
   private void initialize() {
     try {
