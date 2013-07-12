@@ -7,6 +7,7 @@ import android.widget._
 import java.io.IOException
 
 class MainActivity extends Activity {
+  var wordList: List[Word]
 
   override protected def onCreate(savedInstanceState: Bundle) {
     super.onCreate(savedInstanceState)
@@ -49,7 +50,7 @@ class MainActivity extends Activity {
         new InputStreamReader(getResources.getAssets.open("Jukugo2c_utf8.txt"))
       )
       val lines = Iterator.continually(br.readLine).takeWhile(_ != null).toList
-      val wordList = lines.map(_.split(",")).map(arr => new Word(arr(0), arr(1)))
+      this.wordList = lines.map(_.split(",")).map(arr => new Word(arr(0), arr(1)))
     } catch { case e: IOException =>
       throw new IOException(e.getMessage.toString)
     }
@@ -65,6 +66,9 @@ class MainActivity extends Activity {
     val postCandidate: Array[Word] = Array()
     val rnd = new java.util.Random()
     showMessage("showQuestion")
+    
+    this.wordList
+    
   }
 
   /*
