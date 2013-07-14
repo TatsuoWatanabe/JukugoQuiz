@@ -3,6 +3,7 @@ package com.example.jukugoquiz
 import android.os.Bundle
 import android.app.Activity
 import android.view.Menu
+import android.view.View
 import android.widget._
 import java.io.IOException
 import java.util.Date
@@ -54,10 +55,7 @@ class MainActivity extends Activity {
       showMessage(e.getLocalizedMessage)
     }
 
-    val watch = Watch("showQuestion")
     showQuestion()
-    watch.log
-    
   }
 
   /**
@@ -83,30 +81,32 @@ class MainActivity extends Activity {
     import scala.collection.mutable.ArrayBuffer
     import scala.util.Random
     
+    val watch = Watch("showQuestion")
+    
     val et = findViewById(R.id.editTextAnswer).asInstanceOf[EditText]
     et.setText("")
     var candidateCount = 0
-    val preCandidate: ArrayBuffer[Word] = ArrayBuffer()
-    val postCandidate: ArrayBuffer[Word] = ArrayBuffer()
+    var preCandidate: List[Word] = Nil
+    var postCandidate: List[Word] = Nil
 
     while((preCandidate.size + postCandidate.size) < 4){
       val selectedWord = this.wordList((new Random).nextInt(this.wordList.size)).kanji
       val selectedChar = selectedWord.charAt((new Random).nextInt(2))
-      
-      preCandidate.clear
-      postCandidate.clear
+
       AnswerChar = selectedChar
       
-      for(w <- this.wordList){
-        w.search(selectedChar) match {
-          case SearchResult.Pre => preCandidate += w
-          case SearchResult.Post => postCandidate += w
-          case _ =>
-        }
-      }
+      preCandidate  = this.wordList.filter(_.kanji.indexOf(selectedChar) == 1).toList
+      postCandidate = this.wordList.filter(_.kanji.indexOf(selectedChar) == 0).toList
+//      this.wordList.foreach { w =>
+//        w.search(selectedChar) match {
+//          case SearchResult.Pre => preCandidate += w
+//          case SearchResult.Post => postCandidate += w
+//          case _ =>
+//        }
+//      }
     }// end while
     
-    this.showMessage(AnswerChar.toString)
+    et.setText(AnswerChar.toString)
     
     Answers = ArrayBuffer.fill(8)(Word("●●", ""))
     //preCandidateからランダムに4件取り出してAnswers配列の前半に格納
@@ -121,6 +121,10 @@ class MainActivity extends Activity {
       val vId = getResources.getIdentifier("textView" + (i + 5).toString, "id", getPackageName())
       findViewById(vId).asInstanceOf[TextView].setText(w.char2.toString)
     }
+    
+    android.util.Log.d("Watch", "Watch -- " + Answers.toString)
+    
+    watch.log
   }
 
   /**
@@ -129,6 +133,13 @@ class MainActivity extends Activity {
   def showMessage(s: String){
     val b = new android.app.AlertDialog.Builder(this)
     b.setMessage(s).setPositiveButton(android.R.string.ok, null).show()
+  }
+  
+  /**
+   * buttonNext
+   */
+  def buttonNextClick(v: View) {
+    showQuestion();
   }
 
 
