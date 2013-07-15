@@ -115,7 +115,6 @@ class MainActivity extends Activity {
     AnswerChar = selectedChar
  
     et.setText("")
-    et.setText(AnswerChar.toString)
     
     Answers = ArrayBuffer.fill(8)(Word("●●", ""))
     //preCandidateからランダムに4件取り出してAnswers配列の前半に格納
@@ -148,5 +147,25 @@ class MainActivity extends Activity {
   private def showMessage(s: String){
     val b = new android.app.AlertDialog.Builder(this)
     b.setMessage(s).setPositiveButton(android.R.string.ok, null).show()
+  }
+  
+  object Answer {
+    import scala.collection.mutable.ArrayBuffer
+    val answersPre  = ArrayBuffer[Word]()
+    val answersPost = ArrayBuffer[Word]()
+    
+    def initialize {
+      List(answersPre, answersPost).foreach { answers =>
+        answers.clear
+        answers ++= ArrayBuffer.fill(4)(Word("●●", ""))
+      }     
+    }
+    
+    def setAnswers(preCandidate: List[Word], postCandidate: List[Word]){
+      //preCandidateからランダムに4件取り出し
+      Random.shuffle(preCandidate).take(4).zipWithIndex.foreach{ case (w:Word , i: Int) => answersPre(i) = w }
+      //postCandidateからランダムに4件取り出し
+      Random.shuffle(postCandidate).take(4).zipWithIndex.foreach{ case (w:Word , i: Int) => answersPost(i) = w }
+    }
   }
 }
