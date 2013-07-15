@@ -25,21 +25,44 @@ class MainActivity extends Activity {
     true
   }
 
-  /*
-  def clickButton(view: android.view.View) {
-    val edit01 = findViewById(R.id.editText1).asInstanceOf[EditText]
-    val edit02 = findViewById(R.id.editText2).asInstanceOf[EditText]
-    val msg = "Hi " + edit01.getText + edit02.getText
-    //Toast.makeText(this, msg , Toast.LENGTH_LONG).show()
-    this.showMessage(msg)
-  }
+ /**
+  * buttonSubmitClick
   */
+  def buttonSubmitClick(v: View) {
+    val et = findViewById(R.id.editTextAnswer).asInstanceOf[EditText]
+    et.getText.toString match {
+      case "" =>
+      case s: String if s.charAt(0) == AnswerChar => showMessage("正解です!\n\n" + this.getAnswerString)
+      case _ => showMessage("違います!")
+    }
+  }
+  
+  /**
+   * buttonGiveUpClick
+   */
+  def buttonGiveUpClick(v: View) {
+    val et = findViewById(R.id.editTextAnswer).asInstanceOf[EditText]
+    et.setText(AnswerChar.toString);
+    showMessage("答えは「" + AnswerChar.toString + "」です\n\n" + this.getAnswerString);
+  }
+  
+  /**
+   * buttonNextClick
+   */
+  def buttonNextClick(v: View) {
+    showQuestion();
+  }  
+  
+  /**
+   * case class Watch
+   */
   case class Watch (label: String) {
     private val start: Date = new Date 
     def log() = {
       android.util.Log.d(label, "Watch -- " + label + " : " + ((new Date).getTime - start.getTime).toString + " ms")
     }
   }
+  
   /**
    * initialize
    */
@@ -83,29 +106,15 @@ class MainActivity extends Activity {
     
     val watch = Watch("showQuestion")
     
-    val et = findViewById(R.id.editTextAnswer).asInstanceOf[EditText]
+    val et = findViewById(R.id.editTextAnswer).asInstanceOf[EditText] 
+    val selectedWord = this.wordList((new Random).nextInt(this.wordList.size)).kanji
+    val selectedChar = selectedWord.charAt((new Random).nextInt(2))
+    val wordListFilterd: Array[Word] = this.wordList.filter(_.kanji.indexOf(selectedChar) != -1)
+    val preCandidate: List[Word] = wordListFilterd.filter(_.kanji.indexOf(selectedChar) == 1).toList
+    val postCandidate: List[Word] = wordListFilterd.filter(_.kanji.indexOf(selectedChar) == 0).toList
+    AnswerChar = selectedChar
+ 
     et.setText("")
-    var candidateCount = 0
-    var preCandidate: List[Word] = Nil
-    var postCandidate: List[Word] = Nil
-
-    while((preCandidate.size + postCandidate.size) < 4){
-      val selectedWord = this.wordList((new Random).nextInt(this.wordList.size)).kanji
-      val selectedChar = selectedWord.charAt((new Random).nextInt(2))
-
-      AnswerChar = selectedChar
-      
-      preCandidate  = this.wordList.filter(_.kanji.indexOf(selectedChar) == 1).toList
-      postCandidate = this.wordList.filter(_.kanji.indexOf(selectedChar) == 0).toList
-//      this.wordList.foreach { w =>
-//        w.search(selectedChar) match {
-//          case SearchResult.Pre => preCandidate += w
-//          case SearchResult.Post => postCandidate += w
-//          case _ =>
-//        }
-//      }
-    }// end while
-    
     et.setText(AnswerChar.toString)
     
     Answers = ArrayBuffer.fill(8)(Word("●●", ""))
@@ -123,24 +132,21 @@ class MainActivity extends Activity {
     }
     
     android.util.Log.d("Watch", "Watch -- " + Answers.toString)
-    
     watch.log
   }
 
   /**
-   * showMessage
+   * getAnswerString
    */
-  def showMessage(s: String){
-    val b = new android.app.AlertDialog.Builder(this)
-    b.setMessage(s).setPositiveButton(android.R.string.ok, null).show()
+  private def getAnswerString() = {
+    Answers.map(a => a.kanji + "  (" + a.yomi + ")").mkString("\n")
   }
   
   /**
-   * buttonNext
+   * showMessage
    */
-  def buttonNextClick(v: View) {
-    showQuestion();
+  private def showMessage(s: String){
+    val b = new android.app.AlertDialog.Builder(this)
+    b.setMessage(s).setPositiveButton(android.R.string.ok, null).show()
   }
-
-
 }
