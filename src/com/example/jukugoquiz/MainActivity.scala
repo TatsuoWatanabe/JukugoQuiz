@@ -36,7 +36,7 @@ class MainActivity extends Activity {
       case _ => showMessage("違います!")
     }
   }
-  
+
   /**
    * buttonGiveUpClick
    */
@@ -45,24 +45,24 @@ class MainActivity extends Activity {
     et.setText(AnswerChar.toString);
     showMessage("答えは「" + AnswerChar.toString + "」です\n\n" + this.getAnswerString);
   }
-  
+
   /**
    * buttonNextClick
    */
   def buttonNextClick(v: View) {
     showQuestion();
-  }  
-  
+  }
+
   /**
    * case class Watch
    */
   case class Watch (label: String) {
-    private val start: Date = new Date 
+    private val start: Date = new Date
     def log() = {
       android.util.Log.d(label, "Watch -- " + label + " : " + ((new Date).getTime - start.getTime).toString + " ms")
     }
   }
-  
+
   /**
    * initialize
    */
@@ -73,7 +73,7 @@ class MainActivity extends Activity {
       val watch = Watch("loadData")
       loadData()
       watch.log
-      
+
     } catch { case e: IOException =>
       showMessage(e.getLocalizedMessage)
     }
@@ -103,19 +103,19 @@ class MainActivity extends Activity {
   private def showQuestion() {
     import scala.collection.mutable.ArrayBuffer
     import scala.util.Random
-    
+
     val watch = Watch("showQuestion")
-    
-    val et = findViewById(R.id.editTextAnswer).asInstanceOf[EditText] 
+
+    val et = findViewById(R.id.editTextAnswer).asInstanceOf[EditText]
     val selectedWord = this.wordList((new Random).nextInt(this.wordList.size)).kanji
     val selectedChar = selectedWord.charAt((new Random).nextInt(2))
     val wordListFilterd: Array[Word] = this.wordList.filter(_.kanji.indexOf(selectedChar) != -1)
     val preCandidate: List[Word] = wordListFilterd.filter(_.kanji.indexOf(selectedChar) == 1).toList
     val postCandidate: List[Word] = wordListFilterd.filter(_.kanji.indexOf(selectedChar) == 0).toList
     AnswerChar = selectedChar
- 
+
     et.setText("")
-    
+
     Answers = ArrayBuffer.fill(8)(Word("●●", ""))
     //preCandidateからランダムに4件取り出してAnswers配列の前半に格納
     Random.shuffle(preCandidate).take(4).zipWithIndex.foreach{ case (w:Word , i: Int) =>
@@ -129,7 +129,7 @@ class MainActivity extends Activity {
       val vId = getResources.getIdentifier("textView" + (i + 5).toString, "id", getPackageName())
       findViewById(vId).asInstanceOf[TextView].setText(w.char2.toString)
     }
-    
+
     android.util.Log.d("Watch", "Watch -- " + Answers.toString)
     watch.log
   }
@@ -140,7 +140,7 @@ class MainActivity extends Activity {
   private def getAnswerString() = {
     Answers.map(a => a.kanji + "  (" + a.yomi + ")").mkString("\n")
   }
-  
+
   /**
    * showMessage
    */
@@ -148,24 +148,26 @@ class MainActivity extends Activity {
     val b = new android.app.AlertDialog.Builder(this)
     b.setMessage(s).setPositiveButton(android.R.string.ok, null).show()
   }
-  
+
   object Answer {
     import scala.collection.mutable.ArrayBuffer
     val answersPre  = ArrayBuffer[Word]()
     val answersPost = ArrayBuffer[Word]()
-    
+    var answerChar = 0
+
     def initialize {
       List(answersPre, answersPost).foreach { answers =>
         answers.clear
         answers ++= ArrayBuffer.fill(4)(Word("●●", ""))
-      }     
+      }
     }
-    
-    def setAnswers(preCandidate: List[Word], postCandidate: List[Word]){
+
+    def setAnswers(preCandidate: List[Word], postCandidate: List[Word], AnswerChar: Char){
       //preCandidateからランダムに4件取り出し
       Random.shuffle(preCandidate).take(4).zipWithIndex.foreach{ case (w:Word , i: Int) => answersPre(i) = w }
       //postCandidateからランダムに4件取り出し
       Random.shuffle(postCandidate).take(4).zipWithIndex.foreach{ case (w:Word , i: Int) => answersPost(i) = w }
+      this.answerChar = AnswerChar
     }
   }
 }
