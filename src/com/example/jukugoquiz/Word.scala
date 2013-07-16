@@ -10,6 +10,12 @@ case class Word(kanji: String, yomi: String) {
       case _          => SearchResult.NotFound
     }
   }
+  
+  def answerIndexToChar(i: Int): Char = i match {
+    case i:Int if i >= 0 && i <= 3 => this.char1
+    case i:Int if i >= 4 && i <= 8 => this.char2
+    case _ => 0
+  }
 }
 
 /*
