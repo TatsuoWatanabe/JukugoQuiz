@@ -105,10 +105,11 @@ class MainActivity extends Activity {
 
   object Dictionary {
     lazy val words = try{
-      val br = new java.io.BufferedReader(
-        new java.io.InputStreamReader(getResources.getAssets.open("Jukugo2c_utf8.txt"))
-      )
-      Iterator.continually(br.readLine).takeWhile(_ != null).toArray.map(_.split(",")).map(arr => new Word(arr(0), arr(1)))
+      val is = getResources.getAssets.open("Jukugo2c_utf8.txt");
+      val bis = new java.io.BufferedInputStream(is);
+      var byteArray: Array[Byte] = new Array(bis.available)
+      bis.read(byteArray) //全文読み出し
+      (new String(byteArray)).split("\n").map(l => Word(l.substring(0, l.indexOf(",")), l.substring(l.indexOf(",") + 1)))
     } catch { case e: IOException => throw new IOException(e.getMessage.toString) }
   }//end object Dictionary
 
