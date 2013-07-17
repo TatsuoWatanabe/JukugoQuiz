@@ -47,13 +47,13 @@ class MainActivity extends Activity {
    */
   private def showQuestion() {
     val watch = Watch("showQuestion")
-    
+
     Answer.setNewAnswers.getAnswers.zipWithIndex.foreach { case (w:Word , i: Int) =>
       val vId = getResources.getIdentifier("textView" + (i + 1).toString, "id", getPackageName())
       findViewById(vId).asInstanceOf[TextView].setText(w.answerIndexToChar(i).toString)
     }
     findViewById(R.id.editTextAnswer).asInstanceOf[EditText].setText("")
-    
+
     watch.log
   }
 
@@ -64,7 +64,7 @@ class MainActivity extends Activity {
     val b = new android.app.AlertDialog.Builder(this)
     b.setMessage(s).setPositiveButton(android.R.string.ok, null).show()
   }
-  
+
   case class Word(kanji: String, yomi: String) {
     lazy val char1 = kanji.charAt(0);
     lazy val char2 = kanji.charAt(1);
@@ -83,7 +83,7 @@ class MainActivity extends Activity {
 
     def setNewAnswers() = {
       import scala.util.Random
-      
+
       val selectedChar = Dictionary.words((new Random).nextInt(Dictionary.words.size)).kanji.charAt((new Random).nextInt(2))
       val wordsFilterd = Dictionary.words.filter(_.kanji.indexOf(selectedChar) != -1)
       val preCandidate  = wordsFilterd.filter(_.kanji.indexOf(selectedChar) == 1)
@@ -97,22 +97,26 @@ class MainActivity extends Activity {
       this.answerChar = selectedChar
       this
     }
-    
+
     def getAnswerChar() = this.answerChar
     def getAnswers() = (answersPre ++ answersPost).toArray
     def getAnswersString() = (answersPre ++ answersPost).filter(_.yomi.nonEmpty).map(a => a.kanji + "  (" + a.yomi + ")").mkString("\n")
   }// end object Answer
-  
+
   object Dictionary {
     lazy val words = try{
       val br = new java.io.BufferedReader(
         new java.io.InputStreamReader(getResources.getAssets.open("Jukugo2c_utf8.txt"))
       )
       Iterator.continually(br.readLine).takeWhile(_ != null).toArray.map(_.split(",")).map(arr => new Word(arr(0), arr(1)))
-    } catch { case e: IOException => throw new IOException(e.getMessage.toString) }  
+    } catch { case e: IOException => throw new IOException(e.getMessage.toString) }
   }//end object Dictionary
-  
-  private case class Watch (label: String) {
+
+  /**
+   * 実行時間計測用
+   * case class Watch
+   */
+  case class Watch (label: String) {
     private val start: Date = new Date
     def log() = {
       android.util.Log.d(label, "Watch -- " + label + " : " + ((new Date).getTime - start.getTime).toString + " ms")
