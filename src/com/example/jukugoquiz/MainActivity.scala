@@ -79,7 +79,7 @@ class MainActivity extends Activity {
     import scala.collection.mutable.ArrayBuffer
     val answersPre  = ArrayBuffer[Word]()
     val answersPost = ArrayBuffer[Word]()
-    private var answerChar: Char = 0
+    private var answerChar: Char = Char.MinValue
 
     def setNewAnswers() = {
       import scala.util.Random
