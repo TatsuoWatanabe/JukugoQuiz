@@ -1,4 +1,4 @@
-package com.example.jukugoquiz
+package com.example.scala.jukugoquiz
 
 import android.os.Bundle
 import android.app.Activity
