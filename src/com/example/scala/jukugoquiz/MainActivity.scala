@@ -19,6 +19,10 @@ class MainActivity extends Activity {
     getMenuInflater().inflate(R.menu.main, menu)
     true
   }
+  
+  override def onConfigurationChanged(newConfig: android.content.res.Configuration) {
+    super.onConfigurationChanged(newConfig);
+  }
 
  /**
   * buttonSubmitClick
