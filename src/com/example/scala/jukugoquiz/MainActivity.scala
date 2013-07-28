@@ -21,24 +21,25 @@ class MainActivity extends Activity {
   }
   
   override def onConfigurationChanged(newConfig: android.content.res.Configuration) {
-    super.onConfigurationChanged(newConfig);
+    super.onConfigurationChanged(newConfig)
   }
 
  /**
   * buttonSubmitClick
   */
-  def buttonSubmitClick(v: View) = findViewById(R.id.editTextAnswer).asInstanceOf[EditText].getText.toString match {
-      case "" =>
-      case s: String if s.charAt(0) == Answer.getAnswerChar => showMessage("正解です!\n\n" + Answer.getAnswersString)
-      case _ => showMessage("違います!")
+  def buttonSubmitClick(v: View) = findViewById(R.id.editTextAnswer) match {
+      case e: EditText if e.getText.toString == "" => showMessage("漢字を入力してください。")
+      case e: EditText if e.getText.toString.charAt(0) == Answer.getAnswerChar => showMessage("正解です!\n\n" + Answer.getAnswersString); vibrate(500)
+      case _ => showMessage("違います!"); vibrate(50)
   }
 
   /**
    * buttonGiveUpClick
    */
   def buttonGiveUpClick(v: View) {
-    findViewById(R.id.editTextAnswer).asInstanceOf[EditText].setText(Answer.getAnswerChar.toString);
-    showMessage("答えは「" + Answer.getAnswerChar.toString + "」です。\n\n" + Answer.getAnswersString);
+    findViewById(R.id.editTextAnswer).asInstanceOf[EditText].setText(Answer.getAnswerChar.toString)
+    findViewById(R.id.buttonSubmit).asInstanceOf[Button].setEnabled(false)
+    showMessage("答えは「" + Answer.getAnswerChar.toString + "」です。\n\n" + Answer.getAnswersString)
   }
 
   /**
@@ -57,6 +58,7 @@ class MainActivity extends Activity {
       findViewById(vId).asInstanceOf[TextView].setText(w.answerIndexToChar(i).toString)
     }
     findViewById(R.id.editTextAnswer).asInstanceOf[EditText].setText("")
+    findViewById(R.id.buttonSubmit).asInstanceOf[Button].setEnabled(true)
 
     watch.log
   }
@@ -68,10 +70,17 @@ class MainActivity extends Activity {
     val b = new android.app.AlertDialog.Builder(this)
     b.setMessage(s).setPositiveButton(android.R.string.ok, null).show()
   }
-
+  
+  /**
+   * vibrate
+   */
+  private def vibrate(milliseconds: Long) {
+    getSystemService(android.content.Context.VIBRATOR_SERVICE).asInstanceOf[android.os.Vibrator].vibrate(milliseconds)
+  }
+  
   case class Word(kanji: String, yomi: String) {
-    lazy val char1 = kanji.charAt(0);
-    lazy val char2 = kanji.charAt(1);
+    lazy val char1 = kanji.charAt(0)
+    lazy val char2 = kanji.charAt(1)
     def answerIndexToChar(i: Int): Char = i match {
       case i:Int if i >= 0 && i <= 3 => this.char1
       case i:Int if i >= 4 && i <= 8 => this.char2
@@ -109,8 +118,8 @@ class MainActivity extends Activity {
 
   object Dictionary {
     lazy val words = try{
-      val is = getResources.getAssets.open("Jukugo2c_utf8.txt");
-      val bis = new java.io.BufferedInputStream(is);
+      val is = getResources.getAssets.open("Jukugo2c_utf8.txt")
+      val bis = new java.io.BufferedInputStream(is)
       var byteArray: Array[Byte] = new Array(bis.available)
       bis.read(byteArray) //全文読み出し
       (new String(byteArray)).split("\n").map(l => Word(l.substring(0, l.indexOf(",")), l.substring(l.indexOf(",") + 1)))
