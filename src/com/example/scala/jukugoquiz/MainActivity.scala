@@ -29,8 +29,8 @@ class MainActivity extends Activity {
   */
   def buttonSubmitClick(v: View) = findViewById(R.id.editTextAnswer) match {
       case e: EditText if e.getText.toString == "" => showMessage("漢字を入力してください。")
-      case e: EditText if e.getText.toString.charAt(0) == Answer.getAnswerChar => showMessage("正解です!\n\n" + Answer.getAnswersString); vibrate(500)
-      case _ => showMessage("違います!"); vibrate(50)
+      case e: EditText if e.getText.toString.charAt(0) == Answer.getAnswerChar => showMessage("正解です!\n\n" + Answer.getAnswersString); this.vibrate(500)
+      case _ => showMessage("違います!"); this.vibrate(50)
   }
 
   /**
@@ -78,6 +78,9 @@ class MainActivity extends Activity {
     getSystemService(android.content.Context.VIBRATOR_SERVICE).asInstanceOf[android.os.Vibrator].vibrate(milliseconds)
   }
   
+  /**
+   * case class Word
+   */
   case class Word(kanji: String, yomi: String) {
     lazy val char1 = kanji.charAt(0)
     lazy val char2 = kanji.charAt(1)
@@ -88,6 +91,9 @@ class MainActivity extends Activity {
     }
   }//end of case class Word
 
+  /**
+   * object Answer
+   */
   object Answer {
     import scala.collection.mutable.ArrayBuffer
     val answersPre  = ArrayBuffer[Word]()
@@ -116,6 +122,9 @@ class MainActivity extends Activity {
     def getAnswersString() = (answersPre ++ answersPost).filter(_.yomi.nonEmpty).map(a => a.kanji + "  (" + a.yomi + ")").mkString("\n")
   }// end object Answer
 
+  /**
+   * object Dictionary
+   */
   object Dictionary {
     lazy val words = try{
       val is = getResources.getAssets.open("Jukugo2c_utf8.txt")
