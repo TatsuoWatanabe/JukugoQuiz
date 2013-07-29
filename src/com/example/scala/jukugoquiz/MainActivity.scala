@@ -19,7 +19,7 @@ class MainActivity extends Activity {
     getMenuInflater().inflate(R.menu.main, menu)
     true
   }
-  
+
   override def onConfigurationChanged(newConfig: android.content.res.Configuration) {
     super.onConfigurationChanged(newConfig)
   }
@@ -29,8 +29,12 @@ class MainActivity extends Activity {
   */
   def buttonSubmitClick(v: View) = findViewById(R.id.editTextAnswer) match {
       case e: EditText if e.getText.toString == "" => showMessage("漢字を入力してください。")
-      case e: EditText if e.getText.toString.charAt(0) == Answer.getAnswerChar => showMessage("正解です!\n\n" + Answer.getAnswersString); this.vibrate(500)
-      case _ => showMessage("違います!"); this.vibrate(50)
+      case e: EditText if e.getText.toString.charAt(0) == Answer.getAnswerChar => {
+        showMessage("正解です!\n\n" + Answer.getAnswersString)
+        e.setText(Answer.getAnswerChar.toString)
+        this.vibrate(500)
+      }
+      case e: EditText => showMessage("違います!"); e.setText(""); this.vibrate(50)
   }
 
   /**
@@ -70,14 +74,14 @@ class MainActivity extends Activity {
     val b = new android.app.AlertDialog.Builder(this)
     b.setMessage(s).setPositiveButton(android.R.string.ok, null).show()
   }
-  
+
   /**
    * vibrate
    */
   private def vibrate(milliseconds: Long) {
     getSystemService(android.content.Context.VIBRATOR_SERVICE).asInstanceOf[android.os.Vibrator].vibrate(milliseconds)
   }
-  
+
   /**
    * case class Word
    */
